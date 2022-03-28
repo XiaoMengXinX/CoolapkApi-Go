@@ -1,7 +1,7 @@
 package feed
 
 import (
-	api "api/api"
+	"api/api"
 	"fmt"
 	coolapk "github.com/XiaoMengXinX/CoolapkApi-Go"
 	"net/http"
