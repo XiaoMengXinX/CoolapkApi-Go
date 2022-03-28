@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (c *Coolapk) Request(method, path, param, body string, ctx context.Context) (response []byte, err error) {
+func (c *Coolapk) Request(method, path, param, body string, ctx context.Context) (header http.Header, response []byte, err error) {
 	isPost := method == "POST"
 	client := &http.Client{}
 
@@ -48,5 +48,6 @@ func (c *Coolapk) Request(method, path, param, body string, ctx context.Context)
 		return
 	}
 	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
+	return resp.Header, respBody, err
 }

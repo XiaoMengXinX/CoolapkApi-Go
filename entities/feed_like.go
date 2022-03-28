@@ -1,7 +1,7 @@
 package ent
 
 type FeedLike struct {
-	Response string `json:"-"`
+	RawData
 	ErrorMsg
 	Data struct {
 		Count          int      `json:"count"`

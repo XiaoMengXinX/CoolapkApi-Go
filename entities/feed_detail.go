@@ -1,7 +1,7 @@
 package ent
 
 type FeedDetail struct {
-	Response string `json:"-"`
+	RawData
 	ErrorMsg
 	Data struct {
 		Id                int           `json:"id"`

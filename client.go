@@ -21,7 +21,7 @@ func (d *CoolapkClient) Request(c *Coolapk, result APIResp, method, path, body s
 		}
 	}
 	data := params.Encode()
-	resp, err := c.Request(method, path, data, body, ctx)
-	result.Deserialize(string(resp))
+	header, resp, err := c.Request(method, path, data, body, ctx)
+	result.Deserialize(header, string(resp))
 	return err
 }
