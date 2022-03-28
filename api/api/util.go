@@ -1,9 +1,12 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 )
+
+func A(w http.ResponseWriter, r *http.Request) { fmt.Fprintf(w, "") }
 
 func GetArg(r *http.Request, name string) string {
 	var arg string

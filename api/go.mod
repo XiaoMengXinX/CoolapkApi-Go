@@ -4,8 +4,6 @@ go 1.17
 
 replace github.com/XiaoMengXinX/CoolapkApi-Go v0.0.0 => ../
 
-replace api/api => ./
-
 require github.com/XiaoMengXinX/CoolapkApi-Go v0.0.0
 
 require (
