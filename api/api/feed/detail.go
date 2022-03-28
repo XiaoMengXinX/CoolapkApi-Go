@@ -1,43 +1,24 @@
 package feed
 
 import (
+	api "api/api"
 	"fmt"
 	coolapk "github.com/XiaoMengXinX/CoolapkApi-Go"
 	"net/http"
 	"strconv"
-	"strings"
 )
 
 func FeedDetail(w http.ResponseWriter, r *http.Request) {
-	id, _ := strconv.Atoi(getArg(r, "id"))
+	id, _ := strconv.Atoi(api.GetArg(r, "id"))
 
-	api := coolapk.New()
-	api.Cookie = r.Header.Get("Cookie")
+	c := coolapk.New()
+	c.Cookie = r.Header.Get("Cookie")
 
-	result, err := api.GetFeedDetail(id)
+	result, err := c.GetFeedDetail(id)
 	if err != nil {
 		w.WriteHeader(500)
 	}
-	w = writeHeader(result.Header, w, r)
+	w = api.WriteHeader(result.Header, w, r)
 
 	_, _ = fmt.Fprintf(w, result.Response)
-}
-
-func getArg(r *http.Request, name string) string {
-	var arg string
-	values := r.URL.Query()
-	arg = values.Get(name)
-	return arg
-}
-
-func writeHeader(h http.Header, w http.ResponseWriter, r *http.Request) http.ResponseWriter {
-	for s, a := range h {
-		for _, i := range a {
-			if s == "Set-Cookie" || s == "set-cookie" {
-				i = strings.ReplaceAll(i, "coolapk.com", r.Host)
-			}
-			w.Header().Add(s, i)
-		}
-	}
-	return w
 }

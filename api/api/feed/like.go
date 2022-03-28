@@ -1,6 +1,7 @@
 package feed
 
 import (
+	"api/api"
 	"fmt"
 	coolapk "github.com/XiaoMengXinX/CoolapkApi-Go"
 	"net/http"
@@ -8,16 +9,16 @@ import (
 )
 
 func FeedLike(w http.ResponseWriter, r *http.Request) {
-	id, _ := strconv.Atoi(getArg(r, "id"))
+	id, _ := strconv.Atoi(api.GetArg(r, "id"))
 
-	api := coolapk.New()
-	api.Cookie = r.Header.Get("Cookie")
+	c := coolapk.New()
+	c.Cookie = r.Header.Get("Cookie")
 
-	result, err := api.LikeFeed(id)
+	result, err := c.LikeFeed(id)
 	if err != nil {
 		w.WriteHeader(500)
 	}
-	w = writeHeader(result.Header, w, r)
+	w = api.WriteHeader(result.Header, w, r)
 
 	_, _ = fmt.Fprintf(w, result.Response)
 }
