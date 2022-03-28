@@ -8,7 +8,7 @@ import (
 
 type CoolapkClient struct{}
 
-func (d *CoolapkClient) Request(c *Coolapk, result APIResp, method, path string, ctx context.Context, paramters map[string]interface{}) error {
+func (d *CoolapkClient) Request(c *Coolapk, result APIResp, method, path, body string, ctx context.Context, paramters map[string]interface{}) error {
 	params := url.Values{}
 	for key, value := range paramters {
 		switch value.(type) {
@@ -21,7 +21,7 @@ func (d *CoolapkClient) Request(c *Coolapk, result APIResp, method, path string,
 		}
 	}
 	data := params.Encode()
-	resp, err := c.Request(method, path, data, c.Cookie, ctx)
+	resp, err := c.Request(method, path, data, body, ctx)
 	result.Deserialize(string(resp))
 	return err
 }

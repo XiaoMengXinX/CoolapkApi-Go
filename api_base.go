@@ -3,7 +3,7 @@ package coolapk
 import token "github.com/XiaoMengXinX/FuckCoolapkTokenV2"
 import "context"
 
-const defaultAPIEndpoint = "http://api.coolapk.com/v6"
+const defaultAPIEndpoint = "https://api.coolapk.com/v6"
 const defaultUserAgent = `Dalvik/2.1.0 (Linux; U; Android 11) +CoolMarket/12.1-2203161-universal`
 
 type APIResp interface {
@@ -11,7 +11,7 @@ type APIResp interface {
 }
 
 type APIClient interface {
-	Request(c *Coolapk, result APIResp, method, path string, ctx context.Context, params map[string]interface{}) error
+	Request(c *Coolapk, result APIResp, method, path, body string, ctx context.Context, params map[string]interface{}) error
 }
 
 type Coolapk struct {
