@@ -33,9 +33,8 @@ func getArg(r *http.Request, name string) string {
 func writeHeader(h http.Header, w http.ResponseWriter, r *http.Request) http.ResponseWriter {
 	for s, a := range h {
 		for _, i := range a {
-			if s == "Set-Cookie" {
-				w.Header().Add(s, strings.ReplaceAll(i, "coolapk.com", r.Host))
-				continue
+			if s == "Set-Cookie" || s == "set-cookie" {
+				i = strings.ReplaceAll(i, "coolapk.com", r.Host)
 			}
 			w.Header().Add(s, i)
 		}
