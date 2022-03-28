@@ -34,7 +34,7 @@ func writeHeader(h http.Header, w http.ResponseWriter, r *http.Request) http.Res
 	for s, a := range h {
 		for _, i := range a {
 			if s == "Set-Cookie" {
-				s = strings.ReplaceAll(s, "coolapk.com", r.Host)
+				i = strings.ReplaceAll(i, "coolapk.com", r.Host)
 			}
 			w.Header().Add(s, i)
 		}
