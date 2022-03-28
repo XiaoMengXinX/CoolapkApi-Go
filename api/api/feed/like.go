@@ -1,4 +1,4 @@
-package api
+package feed
 
 import (
 	"fmt"
@@ -7,13 +7,13 @@ import (
 	"strconv"
 )
 
-func FeedDetail(w http.ResponseWriter, r *http.Request) {
+func FeedLike(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(getArg(r, "id"))
 
 	api := coolapk.New()
 	api.Cookie = r.Header.Get("Cookie")
 
-	result, err := api.GetFeedDetail(id)
+	result, err := api.LikeFeed(id)
 	if err != nil {
 		w.WriteHeader(500)
 	}
@@ -24,11 +24,4 @@ func FeedDetail(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	_, _ = fmt.Fprintf(w, result.Response)
-}
-
-func getArg(r *http.Request, name string) string {
-	var arg string
-	values := r.URL.Query()
-	arg = values.Get(name)
-	return arg
 }
