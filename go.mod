@@ -1,6 +1,6 @@
 module github.com/XiaoMengXinX/CoolapkApi-Go
 
-go 1.18
+go 1.17
 
 require github.com/XiaoMengXinX/FuckCoolapkTokenV2 v0.0.0-20220322141610-d8c736ce6aa1
 

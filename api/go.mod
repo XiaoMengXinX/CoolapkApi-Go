@@ -1,6 +1,6 @@
 module api
 
-go 1.18
+go 1.17
 
 replace github.com/XiaoMengXinX/CoolapkApi-Go v0.0.0 => ../
 
