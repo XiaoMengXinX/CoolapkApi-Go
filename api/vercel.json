@@ -6,8 +6,8 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/captcha/:id",
-      "destination": "/api/captcha\\?id=:id"
+      "source": "/captcha\\?id=:id(.*)",
+      "destination": "/api/captcha\\?id=:id*"
     }
   ]
 }
