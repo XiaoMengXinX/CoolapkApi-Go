@@ -16,9 +16,10 @@ func FeedLike(w http.ResponseWriter, r *http.Request) {
 
 	result, err := c.LikeFeed(id)
 	if err != nil {
-		w.WriteHeader(500)
+		api.WriteError(w, err)
+		return
 	}
 	w = api.WriteHeader(result.Header, w, r)
 
-	_, _ = fmt.Fprintf(w, result.Response)
+	_, _ = fmt.Fprint(w, result.Response)
 }
