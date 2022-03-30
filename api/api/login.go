@@ -81,19 +81,21 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	// ocr end
 
-	if captchaData != nil {
-		_ = FS.MkdirAll("captcha", 0777)
-		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
-		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)
+	/*
+		if captchaData != nil {
+			_ = FS.MkdirAll("captcha", 0777)
+			_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
+			_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)
 
-		if r.TLS != nil {
-			result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)
+			if r.TLS != nil {
+				result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)
+			}
+			result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
+			resp, _ := json.Marshal(result)
+			_, _ = fmt.Fprint(w, string(resp))
+			return
 		}
-		result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
-		resp, _ := json.Marshal(result)
-		_, _ = fmt.Fprint(w, string(resp))
-		return
-	}
+	*/
 
 	w = WriteHeader(result.Header, w, r)
 
