@@ -22,7 +22,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
 	if captchaData != nil {
-		err := FS.WriteFile("captcha/"+captchaData.ID, captchaData.Image, 0755)
+		err := FS.WriteFile(captchaData.ID, captchaData.Image, 0755)
 		if err != nil {
 			result.Error = err.Error()
 		}

@@ -8,7 +8,7 @@ import (
 
 func Captcha(w http.ResponseWriter, r *http.Request) {
 	captchaID := GetArg(r, "id")
-	file, err := FS.Open("captcha/" + captchaID)
+	file, err := FS.Open(captchaID)
 	if err != nil {
 		WriteError(w, fmt.Errorf("captcha not found"))
 		return
