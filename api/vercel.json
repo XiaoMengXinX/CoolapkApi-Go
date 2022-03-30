@@ -6,7 +6,7 @@
       "destination": "/api/:path*"
     },
     {
-      "source": "/captcha\\?id=:id(.*)",
+      "source": "/captcha/:id(.*)",
       "destination": "/api/captcha\\?id=:id*"
     }
   ]

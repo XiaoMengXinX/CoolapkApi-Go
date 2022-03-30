@@ -2,25 +2,25 @@ package api
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io/fs"
+	"log"
 	"net/http"
 )
 
 func Captcha(w http.ResponseWriter, r *http.Request) {
 	captchaID := GetArg(r, "id")
-	file, err := FS.Open(captchaID)
+	file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s", captchaID))
 	if err != nil {
+		log.Println(err)
 		WriteError(w, fmt.Errorf("captcha not found"))
 		return
 	}
-	defer file.Close()
 
-	imgBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		WriteError(w, fmt.Errorf("captcha not found"))
 		return
 	}
 	w.Header().Set("Content-Type", "image/jpeg")
 
-	_, _ = w.Write(imgBytes)
+	_, _ = w.Write(file)
 }
