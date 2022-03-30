@@ -4,10 +4,6 @@
     {
       "source": "/:path(.*)",
       "destination": "/api/:path*"
-    },
-    {
-      "source": "/captcha:p(.*)",
-      "destination": "/api/login:p*"
     }
   ]
 }

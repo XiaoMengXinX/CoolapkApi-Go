@@ -35,8 +35,8 @@ func WriteHeader(h http.Header, w http.ResponseWriter, r *http.Request) http.Res
 	return w
 }
 
-func WriteError(w http.ResponseWriter, err error) {
+func WriteError(w http.ResponseWriter, code int, err error) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusInternalServerError)
+	w.WriteHeader(code)
 	_ = json.NewEncoder(w).Encode(ErrorMsg{Error: err.Error()})
 }

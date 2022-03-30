@@ -16,7 +16,7 @@ func FeedLike(w http.ResponseWriter, r *http.Request) {
 
 	result, err := c.LikeFeed(id)
 	if err != nil {
-		api.WriteError(w, err)
+		api.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
 	w = api.WriteHeader(result.Header, w, r)

@@ -16,7 +16,7 @@ func FeedDetail(w http.ResponseWriter, r *http.Request) {
 
 	result, err := c.GetFeedDetail(id)
 	if err != nil {
-		api.WriteError(w, err)
+		api.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
 	w = api.WriteHeader(result.Header, w, r)

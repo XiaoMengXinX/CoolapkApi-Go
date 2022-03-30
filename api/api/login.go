@@ -13,22 +13,26 @@ import (
 var FS = memfs.New()
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	id := GetArg(r, "id")
 	user := GetArg(r, "user")
 	password := GetArg(r, "password")
 	captcha := GetArg(r, "captcha")
 	captchaID := GetArg(r, "captchaID")
 
-	if id != "" {
-		file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.jpg", id))
+	if user == "" || password == "" || captcha == "" || captchaID == "" {
+		WriteError(w, http.StatusBadRequest, fmt.Errorf("invaid user or password"))
+		return
+	}
+
+	if captchaID != "" && captcha == "" && user == "" && password == "" {
+		file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.jpg", captchaID))
 		if err != nil {
 			log.Println(err)
-			WriteError(w, fmt.Errorf("captcha not found"))
+			WriteError(w, http.StatusInternalServerError, fmt.Errorf("captcha not found"))
 			return
 		}
 
 		if err != nil {
-			WriteError(w, fmt.Errorf("captcha not found"))
+			WriteError(w, http.StatusInternalServerError, fmt.Errorf("captcha not found"))
 			return
 		}
 		w.Header().Set("Content-Type", "image/jpeg")
@@ -40,7 +44,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	c := coolapk.New()
 	result, captchaData, err := c.LoginByPassword(user, password, captcha, captchaID)
 	if err != nil {
-		WriteError(w, err)
+		WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
@@ -53,9 +57,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if r.TLS != nil {
-			result.CaptchaURL = fmt.Sprintf("https://%s/captcha?id=%s", r.Host, captchaData.ID)
+			result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)
 		}
-		result.CaptchaURL = fmt.Sprintf("http://%s/captcha?id=%s", r.Host, captchaData.ID)
+		result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
 		resp, _ := json.Marshal(result)
 		_, _ = fmt.Fprint(w, string(resp))
 		return
