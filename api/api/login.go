@@ -19,6 +19,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		WriteError(w, err)
 		return
 	}
+	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
 	if captchaData != nil {
 		err := FS.WriteFile("captcha/"+captchaData.ID, captchaData.Image, 0755)
@@ -36,6 +37,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w = WriteHeader(result.Header, w, r)
-	w.Header().Add("Content-type", "application/json; charset=utf-8")
+
 	_, _ = fmt.Fprint(w, result.Response)
 }

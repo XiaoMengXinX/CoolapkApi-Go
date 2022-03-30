@@ -20,6 +20,6 @@ func FeedDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w = api.WriteHeader(result.Header, w, r)
-	w.Header().Add("Content-type", "application/json; charset=utf-8")
+
 	_, _ = fmt.Fprint(w, result.Response)
 }
