@@ -8,9 +8,11 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 )
 
 var FS = memfs.New()
+var ocrAPI = os.Getenv("OCR_API")
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := GetArg(r, "user")
@@ -42,6 +44,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	c := coolapk.New()
+
+	if captchaID != "" {
+		cookie, _ := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.txt", captchaID))
+		c.Cookie = string(cookie)
+	}
+
 	result, captchaData, err := c.LoginByPassword(user, password, captcha, captchaID)
 	if err != nil {
 		WriteError(w, http.StatusInternalServerError, err)
@@ -49,12 +57,34 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
+	// ocr start
 	if captchaData != nil {
 		_ = FS.MkdirAll("captcha", 0777)
-		err := FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
-		if err != nil {
-			result.Error = err.Error()
+		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
+		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)
+
+		if r.TLS != nil {
+			result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)
 		}
+		result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
+		resp, _ := json.Marshal(result)
+		_, _ = fmt.Fprint(w, string(resp))
+	}
+	ocrResult, _ := httpGet(ocrAPI + result.CaptchaURL)
+	if len(ocrResult) == 4 {
+		result, captchaData, err = c.LoginByPassword(user, password, string(ocrResult), captchaID)
+		if err != nil {
+			return
+		}
+	} else {
+		return
+	}
+	// ocr end
+
+	if captchaData != nil {
+		_ = FS.MkdirAll("captcha", 0777)
+		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
+		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)
 
 		if r.TLS != nil {
 			result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)

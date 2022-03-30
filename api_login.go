@@ -103,7 +103,7 @@ func (d *loginClient) Request(c *Coolapk, result APIResp, method, url, _ string,
 		cookies[ar[0]] = ar[1]
 	}
 	if cookies["uid"] == "" || cookies["username"] == "" || cookies["token"] == "" {
-		return fmt.Errorf("Get cookies failed ")
+		return nil
 	}
 	c.Cookie = fmt.Sprintf("uid=%s; username=%s; token=%s", cookies["uid"], cookies["username"], cookies["token"])
 	return err
