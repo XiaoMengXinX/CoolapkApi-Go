@@ -3,12 +3,9 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/psanford/memfs"
 	"net/http"
 	"strings"
 )
-
-var FS = memfs.New()
 
 type ErrorMsg struct {
 	Error string `json:"error"`

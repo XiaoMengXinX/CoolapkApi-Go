@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	coolapk "github.com/XiaoMengXinX/CoolapkApi-Go"
+	"github.com/psanford/memfs"
 	"net/http"
 )
+
+var FS = memfs.New()
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	user := GetArg(r, "user")
@@ -23,6 +26,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if captchaData != nil {
 		_ = FS.MkdirAll("captcha", 0777)
+		f = FS
+
 		err := FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
 		if err != nil {
 			result.Error = err.Error()
