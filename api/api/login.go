@@ -58,6 +58,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
 	if captchaData != nil {
+		ocrResult, _ := UploadFile(ocrAPI, captchaData.Image)
+		result, captchaData, err = c.LoginByPassword(user, password, string(ocrResult), captchaID)
+		if err != nil {
+			WriteError(w, http.StatusInternalServerError, err)
+			return
+		}
+	}
+
+	if captchaData != nil {
 		_ = FS.MkdirAll("captcha", 0777)
 		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
 		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)

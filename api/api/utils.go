@@ -1,9 +1,11 @@
 package api
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"strings"
 )
@@ -42,11 +44,24 @@ func WriteError(w http.ResponseWriter, code int, err error) {
 	_ = json.NewEncoder(w).Encode(ErrorMsg{Error: err.Error()})
 }
 
-func httpGet(url string) ([]byte, error) {
-	resp, err := http.Get(url)
+func UploadFile(url string, file []byte) ([]byte, error) {
+	bodyBuf := &bytes.Buffer{}
+	bodyWriter := multipart.NewWriter(bodyBuf)
+	fileWriter, err := bodyWriter.CreateFormFile("file", "captcha.jpg")
+	if err != nil {
+		return nil, err
+	}
+	_, err = fileWriter.Write(file)
+	if err != nil {
+		return nil, err
+	}
+	contentType := bodyWriter.FormDataContentType()
+	bodyWriter.Close()
+	resp, err := http.Post(url, contentType, bodyBuf)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	return ioutil.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
+	return respBody, nil
 }
