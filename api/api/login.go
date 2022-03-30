@@ -28,9 +28,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if r.TLS == nil {
-			result.CaptchaURL = fmt.Sprintf("http://%s/captcha/%s", r.Host, captchaData.ID)
+			result.CaptchaURL = fmt.Sprintf("http://%s/captcha?id=%s", r.Host, captchaData.ID)
 		}
-		result.CaptchaURL = fmt.Sprintf("https://%s/captcha/%s", r.Host, captchaData.ID)
+		result.CaptchaURL = fmt.Sprintf("https://%s/captcha?id=%s", r.Host, captchaData.ID)
 		resp, _ := json.Marshal(result)
 		_, _ = fmt.Fprint(w, string(resp))
 		return
