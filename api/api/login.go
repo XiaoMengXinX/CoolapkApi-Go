@@ -18,7 +18,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	captcha := GetArg(r, "captcha")
 	captchaID := GetArg(r, "captchaID")
 
-	if user == "" || password == "" || captcha == "" || captchaID == "" {
+	if user == "" && password == "" {
 		WriteError(w, http.StatusBadRequest, fmt.Errorf("invaid user or password"))
 		return
 	}
