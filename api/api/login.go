@@ -57,7 +57,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
-	// ocr start
 	if captchaData != nil {
 		_ = FS.MkdirAll("captcha", 0777)
 		_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
@@ -69,34 +68,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
 		resp, _ := json.Marshal(result)
 		_, _ = fmt.Fprint(w, string(resp))
-	}
-	ocrResult, _ := httpGet(ocrAPI + result.CaptchaURL)
-	log.Println(string(ocrResult))
-	if len(ocrResult) != 0 {
-		result, captchaData, err = c.LoginByPassword(user, password, string(ocrResult), captchaID)
-		if err != nil {
-			return
-		}
-	} else {
 		return
 	}
-	// ocr end
-
-	/*
-		if captchaData != nil {
-			_ = FS.MkdirAll("captcha", 0777)
-			_ = FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
-			_ = FS.WriteFile(fmt.Sprintf("captcha/%s.txt", captchaData.ID), []byte(c.Cookie), 0755)
-
-			if r.TLS != nil {
-				result.CaptchaURL = fmt.Sprintf("https://%s/login?captchaID=%s", r.Host, captchaData.ID)
-			}
-			result.CaptchaURL = fmt.Sprintf("http://%s/login?captchaID=%s", r.Host, captchaData.ID)
-			resp, _ := json.Marshal(result)
-			_, _ = fmt.Fprint(w, string(resp))
-			return
-		}
-	*/
 
 	w = WriteHeader(result.Header, w, r)
 
