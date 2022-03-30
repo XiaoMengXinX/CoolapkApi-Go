@@ -20,7 +20,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	captchaID := GetArg(r, "captchaID")
 
 	if id != "" {
-		file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.jpg", captchaID))
+		file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.jpg", id))
 		if err != nil {
 			log.Println(err)
 			WriteError(w, fmt.Errorf("captcha not found"))
