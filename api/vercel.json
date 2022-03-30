@@ -4,6 +4,10 @@
     {
       "source": "/:path(.*)",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/captcha?:id(.*)",
+      "destination": "/api/captcha?id=:id*"
     }
   ]
 }
