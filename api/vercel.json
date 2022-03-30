@@ -2,12 +2,12 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/captcha\\?id=:id(.*)",
-      "destination": "/api/login\\?id=:id*"
-    },
-    {
       "source": "/:path(.*)",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/captcha\\?id=:id(.*)",
+      "destination": "/api/login\\?id=:id*"
     }
   ]
 }
