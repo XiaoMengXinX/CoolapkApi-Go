@@ -11,7 +11,7 @@ import (
 var FS = memfs.New()
 
 func init() {
-	_ = FS.MkdirAll("captcha", 0777)
+	_ = FS.MkdirAll("/captcha", 0777)
 }
 
 type ErrorMsg struct {
