@@ -7,7 +7,7 @@
     },
     {
       "source": "/captcha/:id(.*)",
-      "destination": "/api/captcha?id=:id"
+      "destination": "/api/captcha?id=:id*"
     }
   ]
 }
