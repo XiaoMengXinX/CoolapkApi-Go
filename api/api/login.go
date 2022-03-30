@@ -22,15 +22,16 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
 	if captchaData != nil {
-		err := FS.WriteFile(fmt.Sprintf("/captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
+		_ = FS.MkdirAll("captcha", 0777)
+		err := FS.WriteFile(fmt.Sprintf("captcha/%s.jpg", captchaData.ID), captchaData.Image, 0755)
 		if err != nil {
 			result.Error = err.Error()
 		}
 
-		if r.TLS == nil {
-			result.CaptchaURL = fmt.Sprintf("http://%s/captcha?id=%s", r.Host, captchaData.ID)
+		if r.TLS != nil {
+			result.CaptchaURL = fmt.Sprintf("https://%s/captcha?id=%s", r.Host, captchaData.ID)
 		}
-		result.CaptchaURL = fmt.Sprintf("https://%s/captcha?id=%s", r.Host, captchaData.ID)
+		result.CaptchaURL = fmt.Sprintf("http://%s/captcha?id=%s", r.Host, captchaData.ID)
 		resp, _ := json.Marshal(result)
 		_, _ = fmt.Fprint(w, string(resp))
 		return
