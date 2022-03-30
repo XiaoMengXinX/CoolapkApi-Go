@@ -71,7 +71,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, string(resp))
 	}
 	ocrResult, _ := httpGet(ocrAPI + result.CaptchaURL)
-	if len(ocrResult) == 4 {
+	log.Println(string(ocrResult))
+	if len(ocrResult) != 0 {
 		result, captchaData, err = c.LoginByPassword(user, password, string(ocrResult), captchaID)
 		if err != nil {
 			return
