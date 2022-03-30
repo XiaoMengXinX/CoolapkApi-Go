@@ -36,6 +36,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w = WriteHeader(result.Header, w, r)
-
+	w.Header().Add("Content-type", "application/json; charset=utf-8")
 	_, _ = fmt.Fprint(w, result.Response)
 }
