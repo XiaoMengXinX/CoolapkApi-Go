@@ -18,11 +18,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	captcha := GetArg(r, "captcha")
 	captchaID := GetArg(r, "captchaID")
 
-	if user == "" && password == "" {
-		WriteError(w, http.StatusBadRequest, fmt.Errorf("invaid user or password"))
-		return
-	}
-
 	if captchaID != "" && captcha == "" && user == "" && password == "" {
 		file, err := fs.ReadFile(FS, fmt.Sprintf("captcha/%s.jpg", captchaID))
 		if err != nil {
@@ -38,6 +33,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "image/jpeg")
 
 		_, _ = w.Write(file)
+		return
+	}
+
+	if user == "" && password == "" {
+		WriteError(w, http.StatusBadRequest, fmt.Errorf("invaid user or password"))
 		return
 	}
 
