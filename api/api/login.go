@@ -57,7 +57,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Content-type", "application/json; charset=utf-8")
 
-	if captchaData != nil {
+	if captchaData != nil && ocrAPI != "" {
 		ocrResult, _ := UploadFile(ocrAPI, captchaData.Image)
 		result, captchaData, err = c.LoginByPassword(user, password, string(ocrResult), captchaID)
 		if err != nil {
