@@ -1,10 +1,10 @@
 package coolapk
 
 import (
+	"context"
 	token "github.com/XiaoMengXinX/FuckCoolapkTokenV2"
 	"net/http"
 )
-import "context"
 
 const defaultAPIEndpoint = "https://api.coolapk.com/v6"
 const defaultUserAgent = `Dalvik/2.1.0 (Linux; U; Android 11) +CoolMarket/12.1-2203161-universal`
