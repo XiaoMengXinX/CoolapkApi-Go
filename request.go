@@ -2,7 +2,6 @@ package coolapk
 
 import (
 	"context"
-	token "github.com/XiaoMengXinX/FuckCoolapkTokenV2"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -25,17 +24,17 @@ func (c *Coolapk) Request(method, path, param, body string, ctx context.Context)
 
 	req.Header.Set("User-Agent", c.UserAgent)
 	req.Header.Set("X-App-Device", c.DeviceID)
-	req.Header.Set("X-App-Token", token.GetTokenWithDeviceCode(c.DeviceID))
+	req.Header.Set("X-App-Token", c.Token)
 	req.Header.Set("X-Requested-With", "XMLHttpRequest")
-	req.Header.Set("X-Sdk-Int", "31")
+	req.Header.Set("X-Sdk-Int", c.FakeClient.SDKVer)
 	req.Header.Set("X-Sdk-Locale", "zh-CN")
 	req.Header.Set("X-App-Id", "com.coolapk.market")
-	req.Header.Set("X-App-Version", "12.1")
-	req.Header.Set("X-App-Code", "2203161")
-	req.Header.Set("X-Api-Version", "12")
+	req.Header.Set("X-App-Version", c.FakeClient.AppVersion)
+	req.Header.Set("X-App-Code", c.FakeClient.AppCode)
+	req.Header.Set("X-Api-Version", c.FakeClient.AndroidVer)
 	req.Header.Set("X-App-Channel", "coolapk")
 	req.Header.Set("X-App-Mode", "universal")
-	req.Header.Set("X-App-Supported", "2203161")
+	req.Header.Set("X-App-Supported", c.FakeClient.AppCode)
 	if isPost {
 		req.Header.Set("Content-Length", strconv.Itoa(len(body)))
 	}

@@ -17,7 +17,15 @@ var coolapkVersions = [][]string{
 	{"12.2.1", "2204291"},
 	{"12.2", "2204151"},
 }
-var androidVersions = []string{"9", "10", "11", "12"}
+
+var androidVersions = [][]string{
+	{"9", "28"},
+	{"10", "29"},
+	{"11", "30"},
+	{"12", "31"},
+	{"12", "32"},
+}
+
 var models = []string{
 	"Pixel 3",
 	"Pixel 3 XL",
@@ -28,6 +36,7 @@ var models = []string{
 	"Pixel 5",
 	"Pixel 5a",
 }
+
 var buildNumbers = []string{
 	"SP2A.220505.002",
 	"SP2A.220405.003",
@@ -41,11 +50,22 @@ var buildNumbers = []string{
 	"RP1A.200720.009",
 }
 
-func getRandomUA(tmpl string) string {
+func getFakeClientInfo() FakeClientInfo {
 	rand.Seed(time.Now().UnixNano())
 	androidVer := androidVersions[rand.Intn(len(androidVersions))]
 	coolapkVer := coolapkVersions[rand.Intn(len(coolapkVersions))]
 	model := models[rand.Intn(len(models))]
 	buildNumber := buildNumbers[rand.Intn(len(buildNumbers))]
-	return fmt.Sprintf(tmpl, androidVer, model, buildNumber, androidVer, "google", model, buildNumber, androidVer, coolapkVer[0], coolapkVer[1])
+	return FakeClientInfo{
+		AndroidVer:  androidVer[0],
+		SDKVer:      androidVer[1],
+		Model:       model,
+		BuildNumber: buildNumber,
+		AppVersion:  coolapkVer[0],
+		AppCode:     coolapkVer[1],
+	}
+}
+
+func createUA(tmpl string, f FakeClientInfo) string {
+	return fmt.Sprintf(tmpl, f.AndroidVer, f.Model, f.BuildNumber, f.AndroidVer, "google", f.Model, f.BuildNumber, f.AndroidVer, f.AppVersion, f.AppCode)
 }
