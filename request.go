@@ -2,10 +2,12 @@ package coolapk
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
+
+	token "github.com/XiaoMengXinX/FuckCoolapkTokenV2"
 )
 
 func (c *Coolapk) Request(method, path, param, body string, ctx context.Context) (header http.Header, response []byte, err error) {
@@ -24,7 +26,7 @@ func (c *Coolapk) Request(method, path, param, body string, ctx context.Context)
 
 	req.Header.Set("User-Agent", c.UserAgent)
 	req.Header.Set("X-App-Device", c.DeviceID)
-	req.Header.Set("X-App-Token", c.Token)
+	req.Header.Set("X-App-Token", token.GetTokenWithDeviceCode(c.DeviceID))
 	req.Header.Set("X-Requested-With", "XMLHttpRequest")
 	req.Header.Set("X-Sdk-Int", c.FakeClient.SDKVer)
 	req.Header.Set("X-Sdk-Locale", "zh-CN")
@@ -47,6 +49,6 @@ func (c *Coolapk) Request(method, path, param, body string, ctx context.Context)
 		return
 	}
 	defer resp.Body.Close()
-	respBody, err := ioutil.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
 	return resp.Header, respBody, err
 }

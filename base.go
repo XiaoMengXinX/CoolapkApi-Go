@@ -41,7 +41,7 @@ func (c *Coolapk) init() {
 	c.APIEndpoint = defaultAPIEndpoint
 	c.UserAgent = createUA(userAgentTmpl, clientInfo)
 	c.FakeClient = clientInfo
-	c.DeviceID, c.Token = token.GetToken()
+	c.DeviceID, _ = token.GetToken()
 	c.Client = &CoolapkClient{}
 }
 
