@@ -21,7 +21,6 @@ type Coolapk struct {
 	FakeClient  FakeClientInfo
 	APIEndpoint string
 	DeviceID    string
-	Token       string
 	UserAgent   string
 	Cookie      string
 	Client      APIClient
