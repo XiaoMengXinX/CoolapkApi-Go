@@ -3,8 +3,6 @@ package coolapk
 import (
 	"context"
 	"net/http"
-
-	token "github.com/XiaoMengXinX/FuckCoolapkTokenV2"
 )
 
 const defaultAPIEndpoint = "https://api2.coolapk.com/v6"
@@ -18,17 +16,19 @@ type APIClient interface {
 }
 
 type Coolapk struct {
-	FakeClient  FakeClientInfo
-	APIEndpoint string
+	// deprecated
+	FakeClient FakeClientInfo
+	// deprecated
 	DeviceID    string
+	APIEndpoint string
 	UserAgent   string
 	Cookie      string
 	Client      APIClient
 }
 
 type FakeClientInfo struct {
-	AndroidVer  string
-	SDKVer      string
+	ApiVersion  string
+	SdkInt      string
 	Model       string
 	BuildNumber string
 	AppVersion  string
@@ -36,11 +36,8 @@ type FakeClientInfo struct {
 }
 
 func (c *Coolapk) init() {
-	clientInfo := getFakeClientInfo()
 	c.APIEndpoint = defaultAPIEndpoint
-	c.UserAgent = createUA(userAgentTmpl, clientInfo)
-	c.FakeClient = clientInfo
-	c.DeviceID, _ = token.GetToken()
+	c.UserAgent = randomUA()
 	c.Client = &CoolapkClient{}
 }
 
