@@ -1,9 +1,0 @@
-{
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/:path(.*)",
-      "destination": "/api/:path*"
-    }
-  ]
-}

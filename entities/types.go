@@ -3,8 +3,9 @@ package ent
 import "net/http"
 
 type RawData struct {
-	Header   http.Header `json:"-"`
-	Response string      `json:"-"`
+	Header     http.Header `json:"-"`
+	Response   string      `json:"-"`
+	StatusCode int         `json:"-"`
 }
 
 type ErrorMsg struct {

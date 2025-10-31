@@ -10,8 +10,8 @@ type CoolapkClient struct{}
 
 func (d *CoolapkClient) Request(c *Coolapk, result APIResp, method, path, body string, ctx context.Context, paramters map[string]interface{}) error {
 	data := parseParamters(paramters)
-	header, resp, err := c.Request(method, path, data, body, ctx)
-	result.Deserialize(header, string(resp))
+	header, resp, status, err := c.Request(method, path, data, body, ctx)
+	result.Deserialize(header, string(resp), status)
 	return err
 }
 

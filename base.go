@@ -5,10 +5,10 @@ import (
 	"net/http"
 )
 
-const defaultAPIEndpoint = "https://api2.coolapk.com/v6"
+const defaultAPIEndpoint = "https://api.coolapk.com/v6"
 
 type APIResp interface {
-	Deserialize(header http.Header, resp string)
+	Deserialize(header http.Header, resp string, statusCode int)
 }
 
 type APIClient interface {
